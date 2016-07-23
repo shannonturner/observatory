@@ -112,20 +112,23 @@
 
       .sky {
         border-radius: 50%;
-        /*background: url(../hexsky/images/hexsky-20160609-0955.png-full.png);*/
         transform: rotate(0deg);
+        position: relative;
 
         /* Calculated for smallest enclosing circle for a rectangle.
             For a rectangle of 1440x900, this is 1699
             Use radius = 1/2 sqrt(width^2 + height^2) to get circle's radius
         */
 
-        width: 1699px;
+        /* This configuration has a slight corner */
+        /*width: 1699px;
         height: 1699px;
-
-        position: relative;
         left: -8%;
+        margin-top: -30%;*/
+        width: 1899px;
+        height: 1899px;
         margin-top: -28%;
+        margin-left: -14%;
       }
 
     </style>
