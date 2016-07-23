@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <meta property="og:title" content="">
+    <meta property="og:site_name" content="">
+    <meta property="og:url" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="">
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image:src" content="">
+
+    <title>Observatory</title>
+
+    <link rel="icon" href="">
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- This boilerplate is for compatibility with older browsers -->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Analytics Code, add your snippets below.  Sign up / get your snippet at http://www.google.com/analytics/ -->
+    <script>
+      // (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      // (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      // m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      // })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      // ga('create', 'PUT-YOUR-CODE-HERE', 'PUT-YOUR-WEBSITE-HERE');
+      // ga('send', 'pageview');
+    </script>
+
+    <style>
+      .sky.row {
+        /*margin-bottom: -25px;*/
+      }
+      .sky-line {
+        height: 1.75em;
+        opacity: 0.225;
+      }
+      .sky-star {
+        color: #fff;
+        position: relative;
+      }
+      .moon {
+        color: #fcf8e3;
+      }
+      .sky-moon:before {
+        content: '';
+        display: block;
+        border-radius: 100%;
+        background: #ddd;
+        margin: auto;
+        transform: rotate(-5deg);
+        position: relative;
+      }
+      .phase-1 {
+        display: none;
+      }
+      .phase-2:before { /* Waxing Crescent */
+        box-shadow: inset 15px 0 8px #999, 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory;
+        opacity: .7;
+      }
+      .phase-3:before { /* 1st Quarter */
+        box-shadow: inset 10px 0 8px #aaa, 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory;
+        opacity: .8;
+      }
+      .phase-4:before { /* Waxing Gibbous */
+        box-shadow: inset 5px 0 8px #ccc, 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory;
+        opacity: .9;
+      }
+      .phase-5:before { /* Full Moon */
+        box-shadow: 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory; 
+      }
+      .phase-6:before { /* Waning Gibbous */
+        box-shadow: inset -5px 0 8px #ccc, 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory;
+        opacity: .9;
+      }
+      .phase-7:before { /* Third Quarter */
+        box-shadow: inset -10px 0 8px #aaa, 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory;
+        opacity: .8;
+      }
+      .phase-8:before { /* Waning Crescent */
+        box-shadow: inset -15px 0 8px #999, 0 0 50px gold,0 0 150px gold, inset 0 20px 20px 40px whitesmoke, inset 30px 0 35px 50px ivory;
+        opacity: .7;
+      }
+      div.container-fluid {
+        overflow-x: hidden;
+        overflow-y: hidden;
+
+        height: 900px; 
+        padding: 0;
+      }
+
+
+      .sky {
+        border-radius: 50%;
+        /*background: url(../hexsky/images/hexsky-20160609-0955.png-full.png);*/
+        transform: rotate(0deg);
+
+        /* Calculated for smallest enclosing circle for a rectangle.
+            For a rectangle of 1440x900, this is 1699
+            Use radius = 1/2 sqrt(width^2 + height^2) to get circle's radius
+        */
+
+        width: 1699px;
+        height: 1699px;
+
+        position: relative;
+        left: -8%;
+        margin-top: -28%;
+      }
+
+    </style>
+
+  </head>
+
+<body>
+
+<div class="container-fluid">
+
+  <!-- <div class="sky"></div> -->
+
+    <div class="sky row">
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+    <div class="sky-line"> <b class="sky-star"></b><b class="sky-star"></b> <b class="sky-star"></b><b class="sky-star"></b> </div>
+  </div>
+
+  <div class="sky-moon"></div>
+
+
+  
+  <!-- End editing! Your content goes above -->
+</div> <!-- .container-fluid -->
+
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script> -->
+  <script src="js/jquery-2.2.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/seedrandom.min.js"></script>
+
+  <script>
+    function getURLParameter(name) {
+      return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+    }
+
+    $(document).ready(function() {
+
+      var today = new Date();
+
+      skyRotation = getURLParameter('rotation');
+
+      // By default, the page is seeded with today's date
+      seed = getURLParameter('seed') || today.toISOString().slice(0,10);
+
+      $(".sky").css({"transform": "rotate(" + skyRotation + "deg)"});
+      $(".sky-moon").css({"transform": "rotate(" + skyRotation + "deg)"});
+
+      // Only rotate if skyRotation is undefined so it doesn't interfere with webkit2png
+      if (skyRotation === null) {
+        setInterval(function() {
+          if (skyRotation >= 3600) {
+            skyRotation = 0;
+          } else {
+            skyRotation += 1;          
+          }
+          $(".sky").css({"transform": "rotate(" + skyRotation / 10 + "deg)"});
+          $(".sky-moon").css({"transform": "rotate(" + skyRotation / 10 + "deg)"});
+        }, 10);
+      }
+    
+      Math.seedrandom(seed);
+
+      palettes = [
+        ['372f3e', '322a39', '34303e', '352d3c', '453849', '423445', '463547', '483749', '4f3c4f', '553c4f', '593e51', '593948', '644451', '6d5259', '6c5d58', '8b876a'],
+        ['9797e4', '9498e4', '9595e2', 'a5a0ef', 'a29ceb', 'a69ded', 'a89fef', 'afa4f5', 'b5a4f5', 'b9a6f7', 'b9a1ee', 'c4acf7', 'cdbaff', 'ccc5fe', 'ebefff', 'ebefff'],
+        ['424342', '3f4442', '404140', '504c4d', '4d4849', '51494b', '534b4d', '5a5053', '605053', '645255', '644d4c', '6f5855', '78665d', '77715c', '969b6e', '969b6e'],
+        ['133843', '103943', '113641', '21414e', '1e3d4a', '223e4c', '24404e', '2b4554', '314554', '354756', '35424d', '404d56', '495b5e', '48665d', '67906f', '67906f'],
+        ['191943', '161a43', '171741', '27224e', '241e4a', '281f4c', '2a214e', '312654', '372654', '3b2856', '3b234d', '462e56', '4f3c5e', '4e475d', '6d716f', '6d716f'],
+        ['2c1643', '291743', '2a1441', '3a1f4e', '371b4a', '3b1c4c', '3d1e4e', '442354', '4a2354', '4e2556', '4e204d', '592b56', '62395e', '61445d', '806e6f', '806e6f'],
+        ['430c42', '400d42', '410a40', '51154d', '4e1149', '52124b', '54144d', '5b1953', '611953', '651b55', '65164c', '702155', '792f5d', '783a5c', '97646e', '97646e'],
+        ['431611', '401711', '41140f', '511f1c', '4e1b18', '521c1a', '541e1c', '5b2322', '612322', '652524', '65201b', '702b24', '79392c', '78442b', '976e3d', '976e3d'],
+        ['09432a', '06442a', '074128', '174c35', '144831', '184933', '1a4b35', '21503b', '27503b', '2b523d', '2b4d34', '36583d', '3f6645', '3e7144', '5d9b56', '5d9b56'],
+        ['26430b', '23440b', '244109', '344c16', '314812', '354914', '374b16', '3e501c', '44501c', '48521e', '484d15', '53581e', '5c6626', '5b7125', '7a9b37', '7a9b37'],
+        ['293543', '263643', '273341', '373e4e', '343a4a', '383b4c', '3a3d4e', '414254', '474254', '4b4456', '4b3f4d', '564a56', '5f585e', '5e635d', '7d8d6f', '7d8d6f'],
+        ['212143', '1e2243', '1f1f41', '2f2a4e', '2c264a', '30274c', '32294e', '392e54', '3f2e54', '433056', '432b4d', '4e3656', '57445e', '564f5d', '75796f', '75796f'],
+        ['373e2f', '343f2f', '353c2d', '45473a', '424336', '464438', '48463a', '4f4b40', '554b40', '594d42', '594839', '645342', '6d614a', '6c6c49', '8b965b', '8b965b'],
+        ['2f3e37', '2c3f37', '2d3c35', '3d4742', '3a433e', '3e4440', '404642', '474b48', '4d4b48', '514d4a', '514841', '5c534a', '656152', '646c51', '839663', '839663'],
+        ['2f373e', '2c383e', '2d353c', '3d4049', '3a3c45', '3e3d47', '403f49', '47444f', '4d444f', '514651', '514148', '5c4c51', '655a59', '646558', '838f6a', '838f6a'],
+        ['0e0843', '0b0943', '0c0641', '1c114e', '190d4a', '1d0e4c', '1f104e', '261554', '2c1554', '301756', '30124d', '3b1d56', '442b5e', '43365d', '62606f', '62606f'],
+        ['0e081d', '0b091d', '0c061b', '1c1128', '190d24', '1d0e26', '1f1028', '26152e', '2c152e', '301730', '301227', '3b1d30', '442b38', '433637', '626049', '626049'],
+        ['2d1b61', '2a1c61', '2b195f', '3b246c', '382068', '3c216a', '3e236c', '452872', '4b2872', '4f2a74', '4f256b', '5a3074', '633e7c', '62497b', '81738d', '81738d'],
+        ['24062e', '21072e', '22042c', '320f39', '2f0b35', '330c37', '350e39', '3c133f', '42133f', '461541', '461038', '511b41', '5a2949', '593448', '785e5a', '785e5a'],
+        ['1f061d', '1c071d', '1d041b', '2d0f28', '2a0b24', '2e0c26', '300e28', '37132e', '3d132e', '411530', '411027', '4c1b30', '552938', '543437', '735e49', '735e49'],
+        ['0c1e19', '091f19', '0a1c17', '1a2724', '172320', '1b2422', '1d2624', '242b2a', '2a2b2a', '2e2d2c', '2e2823', '39332c', '424134', '414c33', '607645', '607645'],
+        ['060606', '030706', '040404', '140f11', '110b0d', '150c0f', '170e11', '1e1317', '241317', '281519', '281010', '331b19', '3c2921', '3b3420', '5a5e32', '5a5e32'],
+        ['125080', '0f5180', '104e7e', '20598b', '1d5587', '215689', '23588b', '2a5d91', '305d91', '345f93', '345a8a', '3f6593', '48739b', '477e9a', '66a8ac', '66a8ac'],
+        ['111d1f', '0e1e1f', '0f1b1d', '1f262a', '1c2226', '202328', '22252a', '292a30', '2f2a30', '332c32', '332729', '3e3232', '47403a', '464b39', '65754b', '65754b'],
+        ['281e87', '251f87', '261c85', '362792', '33238e', '372490', '392692', '402b98', '462b98', '4a2d9a', '4a2891', '55339a', '5e41a2', '5d4ca1', '7c76b3', '7c76b3'],
+        ['208080', '1d8180', '1e7e7e', '2e898b', '2b8587', '2f8689', '31888b', '388d91', '3e8d91', '428f93', '428a8a', '4d9593', '56a39b', '55ae9a', '74d8ac', '74d8ac'],
+        ['602060', '5d2160', '5e1e5e', '6e296b', '6b2567', '6f2669', '71286b', '782d71', '7e2d71', '822f73', '822a6a', '8d3573', '96437b', '954e7a', 'b4788c', 'b4788c'],
+        ['1660b4', '1361b4', '145eb2', '2469bf', '2165bb', '2566bd', '2768bf', '2e6dc5', '346dc5', '386fc7', '386abe', '4375c7', '4c83cf', '4b8ece', '6ab8e0', '6ab8e0'],
+        ['10a0c0', '0da1c0', '0e9ebe', '1ea9cb', '1ba5c7', '1fa6c9', '21a8cb', '28add1', '2eadd1', '32afd3', '32aaca', '3db5d3', '46c3db', '45ceda', '64f8ec', '64f8ec'],
+        ['3080a0', '2d81a0', '2e7e9e', '3e89ab', '3b85a7', '3f86a9', '4188ab', '488db1', '4e8db1', '528fb3', '528aaa', '5d95b3', '66a3bb', '65aeba', '84d8cc', '84d8cc'],
+        ['3c80c0', '3981c0', '3a7ebe', '4a89cb', '4785c7', '4b86c9', '4d88cb', '548dd1', '5a8dd1', '5e8fd3', '5e8aca', '6995d3', '72a3db', '71aeda', '90d8ec', '90d8ec'],
+        ['309494', '2d9594', '2e9292', '3e9d9f', '3b999b', '3f9a9d', '419c9f', '48a1a5', '4ea1a5', '52a3a7', '529e9e', '5da9a7', '66b7af', '65c2ae', '84ecc0', '84ecc0'],
+      ];
+      colors = palettes[Math.floor(Math.random()*palettes.length)];
+
+      // Sky
+      $(".sky").css({"background": "-moz-linear-gradient(top, #"+colors[0]+" 0%,#"+colors[3]+" 25%,#"+colors[7]+" 50%,#"+colors[11]+" 75%,#"+colors[15]+" 100%)"});
+      $(".sky").css({"background": "linear-gradient(to bottom, #"+colors[0]+" 0%,#"+colors[3]+" 25%,#"+colors[7]+" 50%,#"+colors[11]+" 75%,#"+colors[15]+" 100%)"});
+
+      // Sky-lines
+      for (var skyLine=1; skyLine<=16; skyLine++) {
+        $(".sky-line:nth-child(" + String(skyLine) + ")").css("background", "#"+colors[skyLine-1]);
+      }
+
+      // Most of the time, there are an awful lot of stars in the sky!
+      if (Math.floor(Math.random() * 100) >= 1) {
+        for (var i=0; i<5 + Math.floor(Math.random() * 3500); i++) {
+          $(".sky-line").append('<b class="sky-star"></b>');
+        }
+      }
+
+      star_colors = ['#ff0', '#0f0', '#0ff'];
+
+      // Randomize stars
+      $(".sky-star").each(function() {
+        stars = ['&period;', '&die;', '&middot;', '&dot;', '&bull;'];
+        $(this).html(stars[Math.floor(Math.random()*stars.length)]);
+        $(this).css("left", String(Math.floor(Math.random()*100)) + "%");
+        $(this).css("font-size", String(50+(Math.floor(Math.random()*100))) + "%");
+        // New: Now, stars will no longer all be exactly horizontally aligned with one another.
+        //    They'll be offset just a bit
+        $(this).css("bottom", String(Math.floor(Math.random()*100)) + "%");
+
+        // Very rarely, a yellow, green, or blue star.
+        star_color = Math.floor(Math.random() * 30000)
+        if (star_color <= 2) {
+          $(this).css("color", star_colors[star_color])
+        }
+
+        // Randomize opacity of each star -- some are dimmer than others!
+        // If it's above 1.0 it'll still be 1.0 opacity -- this will weight it so there are more bright stars
+        $(this).css("opacity", String((40+(Math.floor(Math.random()*80))) / 100));
+      });
+
+      // Randomize size, position of Moon; change shadowing depending on phase
+      var moonTop = (Math.floor(Math.random() * 24) + 16) * -1; // -16 to -40
+      var moonLeft = Math.floor(Math.random() * 80) - 40; // -40 to +40
+      var moonSize = Math.floor(Math.random() * 10) + 20; // 20 to 30
+      // I have to do it this weird way because you can't use $(".sky-moon:before") as a selector
+      $('head').append('<style>.sky-moon:before { top: ' + String(moonTop) + 'em; left: ' + String(moonLeft) + '%; width: ' + String(moonSize) + 'px; height: ' + String(moonSize) + 'px; }</style>');
+      // Re-position the HUD based on moon size so there isn't a gap between the HUD and the sky
+      $(".hud").css("margin-top", String(-1 * moonSize) + "px");
+
+      // Very rarely, a subtle shooting star.
+      setTimeout(function() {
+        $(".sky-star:nth-child(2)").each(function () {
+          if (Math.floor(Math.random() * 100) >= 90) {
+            shootingStarLeft = Math.floor(Math.random() * 84) + 108; // 108 - 192
+            shootingStarTop = Math.floor(Math.random() * 20) + 12; // 12 - 32
+            $(this).addClass("shooting-star");
+            $(this).animate({
+              "left": String(shootingStarLeft) + "em",
+              "top": String(shootingStarTop) + "em",
+            }, 8000);
+            setTimeout(function() {
+              $(".shooting-star").hide();
+            }, 7500); // Hide, otherwise having an element off-screen will allow scrolling to the right for nothing
+            return false;  // Only one shooting star.
+          }
+        });
+      }, 6250);
+
+      // Very rarely, a subtle twinkling star
+      $(".sky-star").each(function() {
+        if (Math.floor(Math.random() * 100) >= 99) {
+          $(this).addClass("twinkle");
+        }
+      });
+
+      setInterval(function() { 
+        $(".twinkle").fadeTo(150, .5).fadeTo(150, 1.0); 
+      }, 3000);
+
+      // // Set .sky-line to 6.25% of height
+      // $(".sky.row").css("height", $(window).height());
+      $(".sky-line").css("height", "6.25%");
+
+      // Randomly control the opacity of the sky-line to brighten stars
+      // Looks best between 0.225 and 0.525 opacity if the sky is blocky
+      // Looks best at higher opacities if only the gradient shows through
+      var opacity = Math.floor(Math.random() * 300) + 225;
+
+      // Randomly control whether the sky-lines are transparent
+      // This reduces blockiness of the overall image because the gradient shows through.
+      if (Math.floor(Math.random() * 100) > 33) {
+        $(".sky-line").css("background", "transparent");
+        opacity = opacity + 500;
+      } else {
+        // Sometimes, the gradient is overwritten with a much darker sky.
+        if (Math.floor(Math.random() * 100) >= 25) {
+          $(".sky").css({"background": "black"});
+        }
+      }
+
+      if (opacity >= 1000) {
+        $(".sky-line").css("opacity", "1");
+      } else {
+        $(".sky-line").css("opacity", "0." + opacity);
+      }
+
+      // Days control the phases of the moon
+
+      if (!sessionStorage["day"]) {
+        sessionStorage["day"] = parseInt(1);
+      } else {
+        sessionStorage["day"] = parseInt(sessionStorage["day"]) + 1;
+      }
+
+      if (!sessionStorage["phase"]) {
+        sessionStorage["phase"] = Math.floor(Math.random() * 8) + 1;
+      }
+
+      if (sessionStorage["day"] % 3 == 0) {
+        sessionStorage["phase"] = parseInt(sessionStorage["phase"]) + 1;
+      }
+
+      if (sessionStorage["phase"] > 8) {
+        sessionStorage["phase"] = parseInt(1);
+      }
+
+      $(".sky-moon").addClass("phase-" + sessionStorage["phase"].toString());
+
+    }); // $(document).ready
+  </script>
+
+  </body>
+</html>
