@@ -120,15 +120,14 @@
             Use radius = 1/2 sqrt(width^2 + height^2) to get circle's radius
         */
 
-        /* This configuration has a slight corner */
-        /*width: 1699px;
-        height: 1699px;
-        left: -8%;
-        margin-top: -30%;*/
         width: 1899px;
         height: 1899px;
-        margin-top: -28%;
-        margin-left: -14%;
+/*        margin-top: -28%;
+        margin-left: -14%;*/
+
+        /* This works better on mobile.  But switch it if it's in portrait mode. */
+        margin-top: -532px;
+        margin-left: -266px;
       }
 
     </style>
@@ -179,6 +178,16 @@
     }
 
     $(document).ready(function() {
+
+      windowHeight = $(window).height();
+      windowWidth = $(window).width();
+
+      if (windowHeight > windowWidth) {
+        $(".sky").css({
+          'margin-top': '-266px',
+          'margin-left': '-532px'
+          });
+      }
 
       var today = new Date();
 
@@ -244,6 +253,9 @@
       // Sky
       $(".sky").css({"background": "-moz-linear-gradient(top, #"+colors[0]+" 0%,#"+colors[3]+" 25%,#"+colors[7]+" 50%,#"+colors[11]+" 75%,#"+colors[15]+" 100%)"});
       $(".sky").css({"background": "linear-gradient(to bottom, #"+colors[0]+" 0%,#"+colors[3]+" 25%,#"+colors[7]+" 50%,#"+colors[11]+" 75%,#"+colors[15]+" 100%)"});
+
+      // Make the background of the sky the same as part of gradient (will only show on much larger screens)
+      $("body").css({"background-color": "#"+colors[7]});
 
       // Sky-lines
       for (var skyLine=1; skyLine<=16; skyLine++) {
